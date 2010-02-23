@@ -80,6 +80,11 @@ module wsa(
    output SCLK,
    output SPI_FLASH_CS,
 
+   // RAM and StrataFlash
+   output SD_CKE,
+   output SF_CE0,
+   output SF_OE,
+
    // Debugging/misc
    output [31:0] PROTO_PORT,
    output GNDpin29,
@@ -148,6 +153,9 @@ module wsa(
    // Misc
    assign clk100 = 0;
    assign SPI_FLASH_CS = 1; // active low
+   assign SD_CKE = 0; // active high
+   assign SF_CE0 = 1; // active low
+   assign SF_OE = 1; // active low
    assign GNDpin30 = 0;
    assign GNDpin29 = 0;
    assign GNDpin39 = 0;
