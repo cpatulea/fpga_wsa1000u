@@ -63,6 +63,9 @@ module rx_buffer
    wire [4:0] 	  bitwidth;
    wire [3:0] 	  bitshift;
    
+   reg [3:0] phase;
+   reg [15:0] top,bottom;
+
    setting_reg #(`FR_RX_FORMAT) sr_rxformat(.clock(rxclk),.reset(reset_regs),
 					    .strobe(serial_strobe),.addr(serial_addr),.in(serial_data),
 					    .out({bypass_hb,want_q,bitwidth,bitshift}));
@@ -85,23 +88,22 @@ module rx_buffer
    wire 	  ch0_in, ch0_out, iq_out;
    assign 	  ch0_in = (phase == 1);
 
-   fifo_4k_18 rxfifo 
-     ( // DSP Write Side
-       .data ( {ch0_in, phase[0], fifodata} ),
-       .wrreq (~rx_full & (phase != 0)),
-       .wrclk ( rxclk ),
-       .wrfull ( rx_full ),
-       .wrempty ( ),
-       .wrusedw ( ),
-       // USB Read Side
-       .q ( {ch0_out,iq_out,usbdata} ),
-       .rdreq ( RD & ~read_count[8] ), 
-       .rdclk ( ~usbclk ),
-       .rdfull ( ),
-       .rdempty ( ),
-       .rdusedw ( rxfifolevel ),
-       // Async, shared
-       .aclr ( reset ) );
+   xilinx_fifo_4k_18 rxfifo(
+      // DSP Write Side
+      .din({ch0_in, phase[0], fifodata}),
+      .wr_en(~rx_full & (phase != 0)),
+      .wr_clk(rxclk),
+      .full(rx_full),
+      
+      // USB Read Side
+      .dout({ch0_out,iq_out,usbdata}),
+      .rd_en(RD & ~read_count[8]),
+      .rd_clk(~usbclk),
+      .rd_data_count(rxfifolevel),
+      
+      // Async, shared
+      .rst(reset)
+   );
 
    // DSP Write Side of FIFO
    reg [15:0] ch_0_reg;
@@ -126,7 +128,6 @@ module rx_buffer
          ch_7_reg <= ch_7;
        end
 
-   reg [3:0] phase;
    always @(posedge rxclk)
      if(reset)
        phase <= 4'd0;
@@ -144,7 +145,6 @@ module rx_buffer
    assign    fifodata = (bitwidth == 5'd8) ? fifodata_8 : fifodata_16;
    
    assign    fifodata_8 = {round_8(top),round_8(bottom)};
-   reg [15:0] top,bottom;
    
    function [7:0] round_8;
       input [15:0] in_val;
