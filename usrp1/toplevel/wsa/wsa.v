@@ -131,14 +131,14 @@ module wsa(
    wire        serial_strobe;
    wire [6:0]  serial_addr;
    wire [31:0] serial_data;
+   wire [2:0]  serial_csn;
 
    reg [15:0] debug_counter;
    
    // SPI bus via CPLD to ADC and d'board (J4)
    assign SCLK = USB_PA4_SCLK;
-   assign SDIO = USB_PA5_SDO; // never read from ADC
-   // TODO: Decode chip select code from USB.
-   assign ADC_CS_N = 1; // active low
+   assign SDIO = USB_PA6_SDI; // never read from ADC
+   assign ADC_CS_N = serial_csn[1]; // active low
 
    // TODO: Hang these off a SPI register.
    assign VCO_LE = 0;
@@ -217,10 +217,14 @@ module wsa(
    assign      capabilities[3] =   `RX_CAP_HB;
    assign      capabilities[2:0] = `RX_CAP_NCHAN;
 
+   serial_select serial_select
+     ( .sel({USB_PA3_FRDY, USB_PA2_CSN}),
+       .csn(serial_csn)
+       );
 
    serial_io serial_io
      ( .master_clk(usbclk),.serial_clock(USB_PA4_SCLK),.serial_data_in(USB_PA6_SDI),
-       .enable(USB_PA2_CSN),.reset(1'b0),.serial_data_out(USB_PA5_SDO),
+       .enable(~serial_csn[0]),.reset(1'b0),.serial_data_out(USB_PA5_SDO),
        .serial_addr(serial_addr),.serial_data(serial_data),.serial_strobe(serial_strobe),
        .readback_0(0),.readback_1(0),.readback_2(capabilities),.readback_3(32'hf0f0931a),
        .readback_4(rssi_0)
