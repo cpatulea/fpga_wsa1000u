@@ -41,3 +41,4 @@ _impact.cmd
 _impact.log
 *.ntrc_log
 *.restore
+*.mfp
