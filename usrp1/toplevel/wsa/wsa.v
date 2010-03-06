@@ -93,7 +93,17 @@ module wsa(
 );
    wire [15:0] debugdata,debugctrl;
    
-   wire adcclk = ADC_DCOA;   // 50 MHz
+   // Pin assignments restrict the concurrent use of some signals as clocks
+   // because of BUFGMUX sharing. Either use only one of the clocks in each
+   // BUFGMUX or route some of the clocks through a DCM, which bypasses
+   // BUFGMUXes.
+   //
+   // Signals(pin)                              BUFGMUX/Quadrant clock line
+   // ADC_DCOA(GCLK11@D9), USB_IFCLK(GCLK7@A10) X1Y10/H
+   // clk50_in(GCLK8@B8), ADC_DCOB(GCLK4@D10)   X2Y11/E
+   //
+   // See also UCF file for note about pin assignment for (unused) ADC_DCOA.
+   wire adcclk = ADC_DCOB;   // 50 MHz
    wire usbclk = USB_IFCLK;  // 48 MHz
    
    wire RD = USB_CTL1;
