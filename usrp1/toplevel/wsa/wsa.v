@@ -134,7 +134,7 @@ module wsa(
    wire [7:0]  settings;
    
    // Tri-state output buffer
-   xilinx_obuft16 usbdata_tri(.I(usbdata_out),.O(USB_FD),.T(OE));
+   xilinx_obuft16 usbdata_tri(.I(usbdata_out),.O(USB_FD),.T(~OE));
 
    wire [15:0] ch0rx,ch1rx;
    
