@@ -1,9 +1,12 @@
 #
 # Timing constraints
 #
+# TODO: Add the correct OFFSET constraints (some signals are relative to
+# USB_IFCLK, some to ADC_DCOx)
+#
 NET "clk50_in" TNM_NET = clk50_in;
 TIMESPEC TS_clk50_in = PERIOD "clk50_in" 20 ns HIGH 50%;
-OFFSET = IN 10 ns BEFORE "clk50_in";
+# OFFSET = IN 10 ns BEFORE "clk50_in";
 
 # NET "ADC_DCOA" TNM_NET = ADC_DCO;
 NET "ADC_DCOB" TNM_NET = ADC_DCO;
