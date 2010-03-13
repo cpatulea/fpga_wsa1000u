@@ -169,8 +169,8 @@ module wsa(
    assign GNDpin30 = 0;
    assign GNDpin29 = 0;
    assign GNDpin39 = 0;
-   assign LD0 = 0;
-   assign LD1 = 0;
+   assign LD0 = enable_rx;
+   assign LD1 = rx_overrun;
    assign LD2 = 0;
    assign LD3 = 0;
 
