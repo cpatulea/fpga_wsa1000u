@@ -118,8 +118,8 @@ module wsa(
       
    wire [15:0] usbdata_out;
    
-   wire [11:0] rx_a_a = ADC_DA;     // TODO: widen
-   wire [11:0] rx_b_a = ADC_DB;     // TODO: widen
+   wire [11:0] rx_a_a = ADC_DA[13:2];     // TODO: widen
+   wire [11:0] rx_b_a = ADC_DB[13:2];     // TODO: widen
    
    assign ADC_SMI_SCLK = 0;
    assign ADC_SMI_SDO = 0;
