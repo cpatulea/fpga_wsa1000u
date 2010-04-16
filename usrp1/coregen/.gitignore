@@ -1,9 +1,16 @@
+_cg/
 *.asy
 *.gise
-*.ise
 *.veo
 *.xise
 *_flist.txt
 *_readme.txt
 *_xmdf.tcl
 *.pdf
+*.v
+*.vhd
+*.vho
+*.ncf
+coregen.cgp
+coregen.log
+coregen.rsp

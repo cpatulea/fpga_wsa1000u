@@ -42,3 +42,5 @@ _impact.log
 *.ntrc_log
 *.restore
 *.mfp
+*.gise
+*.ut
