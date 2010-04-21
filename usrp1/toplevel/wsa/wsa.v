@@ -253,11 +253,11 @@ module wsa(
        .debug_2(rx_debugbus[15:0]),.debug_3(rx_debugbus[31:16]),
        .reg_0(reg_0));
    
-   wire [15:0] io_0 = {10'b0, FILTER_A1, FILTER_A0, VSWD, VSWC, VSWB, VSWA};
+   wire [9:0] io_15_10_nc;
 
    io_pins io_pins
-     (.io_0(io_0), .reg_0(reg_0),
-      .clock(adcclk),.rx_reset(rx_dsp_reset),.tx_reset(tx_dsp_reset),
+     (.io_0({io_15_10_nc, FILTER_A1, FILTER_A0, VSWD, VSWC, VSWB, VSWA}), .reg_0(reg_0),
+      .clock(adcclk),.rx_reset(rx_dsp_reset),
       .serial_addr(serial_addr),.serial_data(serial_data),.serial_strobe(serial_strobe));
 
    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
