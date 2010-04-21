@@ -158,12 +158,6 @@ module wsa(
    // TODO: Hang these off a SPI register.
    assign VCO_LE = 0;
    // VCO_MUXOUT
-   assign VSWA = 0;
-   assign VSWB = 0;
-   assign VSWC = 0;
-   assign VSWD = 0;
-   assign FILTER_A0 = 0;
-   assign FILTER_A1 = 0;
 
    // Misc
    assign clk100 = 0;
@@ -245,6 +239,7 @@ module wsa(
        .readback_4(rssi_0)
        );
 
+   wire [15:0] reg_0;
    master_control master_control
      ( .master_clk(adcclk),.usbclk(usbclk),
        .serial_addr(serial_addr),.serial_data(serial_data),.serial_strobe(serial_strobe),
@@ -255,8 +250,16 @@ module wsa(
        .rx_sample_strobe(rx_sample_strobe),.strobe_decim(strobe_decim),
        .tx_empty(tx_empty),
        .debug_0(rx_a_a),.debug_1(ddc0_in_i),
-       .debug_2(rx_debugbus[15:0]),.debug_3(rx_debugbus[31:16]));
+       .debug_2(rx_debugbus[15:0]),.debug_3(rx_debugbus[31:16]),
+       .reg_0(reg_0));
    
+   wire [15:0] io_0 = {10'b0, FILTER_A1, FILTER_A0, VSWD, VSWC, VSWB, VSWA};
+
+   io_pins io_pins
+     (.io_0(io_0), .reg_0(reg_0),
+      .clock(adcclk),.rx_reset(rx_dsp_reset),.tx_reset(tx_dsp_reset),
+      .serial_addr(serial_addr),.serial_data(serial_data),.serial_strobe(serial_strobe));
+
    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
    // Misc Settings
    setting_reg #(`FR_MODE) sr_misc(.clock(adcclk),.reset(rx_dsp_reset),.strobe(serial_strobe),.addr(serial_addr),.in(serial_data),.out(settings));

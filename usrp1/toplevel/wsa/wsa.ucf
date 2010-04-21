@@ -196,7 +196,6 @@ NET "ADC_CS_N" IOSTANDARD = LVCMOS33 | LOC = "V11"; # mode1
 # connections to the frontend
 NET "VSWA" LOC = "G16" | IOSTANDARD = LVCMOS33; # xc_d0 
 NET "VSWB" LOC = "N18" | IOSTANDARD = LVCMOS33; # xc_cmd1
-#NET "VSWC" LOC = "U16" | IOSTANDARD = LVCMOS33; # sck 
 NET "VSWC" LOC = "P18" | IOSTANDARD = LVCMOS33; # xc_cmd0
 NET "VSWD" LOC = "H16" | IOSTANDARD = LVCMOS33; # xc_gck0
 
