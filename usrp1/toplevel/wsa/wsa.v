@@ -231,15 +231,16 @@ module wsa(
        .csn(serial_csn)
        );
 
+   wire [15:0] reg_1;
    serial_io serial_io
      ( .master_clk(usbclk),.serial_clock(USB_PA4_SCLK),.serial_data_in(USB_PA6_SDI),
        .enable(~serial_csn[0]),.reset(1'b0),.serial_data_out(USB_PA5_SDO),
        .serial_addr(serial_addr),.serial_data(serial_data),.serial_strobe(serial_strobe),
-       .readback_0(0),.readback_1(0),.readback_2(capabilities),.readback_3(32'hf0f0931a),
+       .readback_0({reg_1, 16'b0}),
+       .readback_1(0),.readback_2(capabilities),.readback_3(32'hf0f0931a),
        .readback_4(rssi_0)
        );
 
-   wire [15:0] reg_0;
    master_control master_control
      ( .master_clk(adcclk),.usbclk(usbclk),
        .serial_addr(serial_addr),.serial_data(serial_data),.serial_strobe(serial_strobe),
@@ -251,12 +252,11 @@ module wsa(
        .tx_empty(tx_empty),
        .debug_0(rx_a_a),.debug_1(ddc0_in_i),
        .debug_2(rx_debugbus[15:0]),.debug_3(rx_debugbus[31:16]),
-       .reg_0(reg_0));
+       .reg_1(reg_1));
    
-   wire [9:0] io_15_10_nc;
-
+   wire [9:0] io_rx_a_nc;
    io_pins io_pins
-     (.io_0({io_15_10_nc, FILTER_A1, FILTER_A0, VSWD, VSWC, VSWB, VSWA}), .reg_0(reg_0),
+     (.io_1({io_rx_a_nc, FILTER_A1, FILTER_A0, VSWD, VSWC, VSWB, VSWA}), .reg_1(reg_1),
       .clock(adcclk),.rx_reset(rx_dsp_reset),
       .serial_addr(serial_addr),.serial_data(serial_data),.serial_strobe(serial_strobe));
 
