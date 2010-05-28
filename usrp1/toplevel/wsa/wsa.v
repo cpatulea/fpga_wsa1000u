@@ -149,6 +149,7 @@ module wsa(
    assign SCLK = USB_PA4_SCLK;
    assign SDIO = USB_PA6_SDI; // never read from ADC
    assign ADC_CS_N = serial_csn[1]; // active low
+   assign VCO_LE = serial_csn[2]; // PLL on RFE0440
 
    // SPI bus to Patrick's ADF4350 board.
    assign PROTO_PORT[1] = USB_PA4_SCLK;
@@ -156,7 +157,6 @@ module wsa(
    assign PROTO_PORT[5] = serial_csn[2];
 
    // TODO: Hang these off a SPI register.
-   assign VCO_LE = 0;
    // VCO_MUXOUT
 
    // Misc
