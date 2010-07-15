@@ -236,7 +236,8 @@ module wsa(
      ( .master_clk(usbclk),.serial_clock(USB_PA4_SCLK),.serial_data_in(USB_PA6_SDI),
        .enable(~serial_csn[0]),.reset(1'b0),.serial_data_out(USB_PA5_SDO),
        .serial_addr(serial_addr),.serial_data(serial_data),.serial_strobe(serial_strobe),
-       .readback_0({reg_1, 16'b0}),
+       .readback_0({9'b0, VCO_MUXOUT, FILTER_A1, FILTER_A0, VSWD, VSWC, VSWB, VSWA,
+                    16'b0}),
        .readback_1(0),.readback_2(capabilities),.readback_3(32'hf0f0931a),
        .readback_4(rssi_0)
        );
