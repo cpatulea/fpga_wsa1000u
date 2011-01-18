@@ -11,6 +11,8 @@ _cg/
 *.vhd
 *.vho
 *.ncf
+*.sym
+*_ise11migration.zip
 coregen.cgp
 coregen.log
 coregen.rsp

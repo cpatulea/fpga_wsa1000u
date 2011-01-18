@@ -44,3 +44,6 @@ _impact.log
 *.mfp
 *.gise
 *.ut
+*.ipf
+*.jam
+*.svf
