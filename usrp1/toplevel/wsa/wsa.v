@@ -221,9 +221,9 @@ module wsa(
    // Control Functions
 
    wire [31:0] capabilities;
-   assign      capabilities[7] =   `TX_CAP_HB;
+   assign      capabilities[7] =   0;
    assign      capabilities[6:4] = `TX_CAP_NCHAN;
-   assign      capabilities[3] =   `RX_CAP_HB;
+   assign      capabilities[3] =   0;
    assign      capabilities[2:0] = `RX_CAP_NCHAN;
 
    serial_select serial_select
